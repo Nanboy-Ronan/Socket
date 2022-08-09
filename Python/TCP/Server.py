@@ -10,14 +10,15 @@ print('Server Started')
 
 def run(client_socket, addr):
     print('Client Address: ', addr)
-    client_socket.send('Receive'.encode('utf-8'))
     while True:
         data = client_socket.recv(1024)
-        if data == b"":
-            continue
-        print(data.decode('utf-8'))
         value = data.decode('utf-8')
-        client_socket.send((value+value).encode('utf-8'))
+        if data == "bye":
+            client_socket.close()
+            break
+        else:
+            print(data.decode('utf-8'))
+            client_socket.send(('Get ' + value).encode('utf-8'))
 
 while True:
     sock, addr = socket_server.accept()
